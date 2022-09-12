@@ -20,6 +20,31 @@ option_price:
     dir: D:\BaiduNetdiskDownload\L1_data\option\option_price
     batch_size: 400
 
+option_pricemin:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\option\option_pricemin
+    batch_size: 400
+
+option_price03min:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\option\option_price03min
+
+option_price05min:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\option\option_price05min
+
+option_price15min:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\option\option_price15min
+
+option_price30min:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\option\option_price30min
+
+option_price60min:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\option\option_price60min
+
   logging:
     level:
       org.alige.data.md.dao: info

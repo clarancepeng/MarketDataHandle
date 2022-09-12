@@ -86,4 +86,33 @@
             #{price.tradingphase}, #{price.imagestatus}, #{price.seqno}, #{price.preclosepx}, #{price.numtrade})
         </foreach>
     </insert>
+
+    <update id="createOptionPriceMinTable">
+        create table ${tableName} (
+        id  SERIAL PRIMARY KEY,
+        datadate integer,
+        optid varchar(31),
+        exchangecd char(4),
+        utcoffect integer,
+        bartime varchar(5),
+        closeprice numeric(12, 4),
+        openprice numeric(12, 4),
+        highprice numeric(12, 4),
+        lowprice numeric(12, 4),
+        volume numeric(20),
+        totalvalue numeric(18, 4),
+        vwap numeric(12, 4),
+        openints numeric(20)
+        )
+    </update>
+
+    <insert id="insertOptionPriceMinBatch" parameterType="org.alige.data.md.model.OptionPriceMin">
+        INSERT INTO ${tableName} (datadate, optid, exchangecd, utcoffect, bartime, closeprice, openprice, highprice,
+        lowprice, volume, totalvalue, vwap, openints)
+        VALUES
+        <foreach collection="priceList" item="price" separator=",">
+            (#{price.datadate}, #{price.optid}, #{price.exchangecd}, #{price.utcoffect}, #{price.bartime}, #{price.closeprice}, #{price.openprice}, #{price.highprice},
+            #{price.lowprice}, #{price.volume}, #{price.value}, #{price.vwap}, #{price.openints})
+        </foreach>
+    </insert>
 </mapper>

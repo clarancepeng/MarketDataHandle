@@ -2,6 +2,7 @@ package org.alige.data.md;
 
 import lombok.extern.slf4j.Slf4j;
 import org.alige.data.md.model.OptionPrice;
+import org.alige.data.md.model.OptionPriceMin;
 import org.alige.data.md.service.OptionPriceService;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,29 @@ public class DataImport {
     @Value("${option_price.data.dir}")
     private String optionPriceDataDir;
 
+    @Value("${option_pricemin.data.dir}")
+    private String optionPriceMinDataDir;
+
+    @Value("${option_price03min.data.dir}")
+    private String optionPrice03MinDataDir;
+
+    @Value("${option_price05min.data.dir}")
+    private String optionPrice05MinDataDir;
+
+    @Value("${option_price15min.data.dir}")
+    private String optionPrice15MinDataDir;
+
+    @Value("${option_price30min.data.dir}")
+    private String optionPrice30MinDataDir;
+
+    @Value("${option_price60min.data.dir}")
+    private String optionPrice60MinDataDir;
+
     @Value("${option_price.data.batch_size: 300}")
     private int optionPriceDataBatchSize = 300;
+
+    @Value("${option_pricemin.data.batch_size: 300}")
+    private int optionPriceMinDataBatchSize = 300;
 
     private int guessDate(String fileName) {
         int place = fileName.indexOf('.');
@@ -54,13 +76,27 @@ public class DataImport {
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
-            zipImport();
+            zipImportOptionMinData("", optionPriceMinDataDir);
+            zipImportOptionMinData("03", optionPrice03MinDataDir);
+            zipImportOptionMinData("05", optionPrice05MinDataDir);
+            zipImportOptionMinData("15", optionPrice15MinDataDir);
+            zipImportOptionMinData("30", optionPrice30MinDataDir);
+            zipImportOptionMinData("60", optionPrice60MinDataDir);
+            zipImportOptionTickData();
         };
     }
 
     public int toInt(String data) {
         try {
             return Integer.parseInt(data);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public long toLong(String data) {
+        try {
+            return Long.parseLong(data);
         } catch (Exception e) {
             return 0;
         }
@@ -74,7 +110,7 @@ public class DataImport {
         }
     }
 
-    public void zipImport() {
+    public void zipImportOptionTickData() {
         try {
             Path path = Paths.get(optionPriceDataDir);
 //            Set<String> fileList = new HashSet<>();
@@ -209,30 +245,6 @@ public class DataImport {
                                                             optionPriceService.insertOptionPriceBatch(tableName, priceList);
                                                             priceList.clear();
                                                         }
-                                                        //                                        ColumnPositionMappingStrategy strategy = new ColumnPositionMappingStrategy();
-                                                        //                                        strategy.setType(OptionPrice.class);
-                                                        //
-                                                        //                                        CsvToBean csvToBean = new CsvToBeanBuilder(br)
-                                                        //                                                .withType(OptionPrice.class)
-                                                        //                                                .withSeparator('\t')
-                                                        ////                                                .withMappingStrategy(strategy)
-                                                        //                                                .withIgnoreLeadingWhiteSpace(true)
-                                                        //                                                .build();
-                                                        //
-                                                        //                                        List<OptionPrice> optionPriceList = csvToBean.parse();
-                                                        //                                        for(OptionPrice op : optionPriceList) {
-                                                        //                                            log.info("{}", op);
-                                                        //                                        }
-                                                        //                                        System.out.println();
-                                                        //                                        br.close();
-                                                        //                                    zipInput = new ZipInputStream(new FileInputStream(fileName));
-                                                        //                                    final RandomAccessFile rf = new RandomAccessFile(fileName, "r");
-                                                        //                                    String line;
-                                                        //                                    while ((line = rf.readLine()) != null) {
-                                                        //                                        System.out.println(line);
-                                                        //                                    }
-                                                        //                                    rf.close();
-                                                        //                                    zipInput.closeEntry();
                                                     }
                                                 }
                                             }
@@ -254,6 +266,129 @@ public class DataImport {
         } catch (final Exception ioe) {
             System.err.println("Unhandled exception:");
             ioe.printStackTrace();
+            return;
+        }
+    }
+
+    public void zipImportOptionMinData(String minType, String dataDir) {
+        try {
+            Path path = Paths.get(dataDir);
+//            Set<String> fileList = new HashSet<>();
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
+                for (Path mp : stream) {
+                    String monthPath = mp.getFileName().toString();
+                    log.info("Prepare to handle Monthly Data[{}]", monthPath);
+                    if (!Files.isDirectory(mp)) {
+                        log.info("Directory [{}] is a file", mp.getFileName());
+                        continue;
+                    }
+                    try (Stream<Path> sp = Files.list(mp)) {
+                        sp.sorted().forEach(p -> {
+                            String zipFileName = p.getFileName().toString();
+                            if (zipFileName.endsWith("zip")) {
+                                try {
+                                    log.info("Zip File: {}", p.getFileName());
+                                    final ZipFile zipFile = new ZipFile(p.toFile());
+                                    final Enumeration<? extends ZipEntry> entries = zipFile.entries();
+                                    ZipInputStream zipInput = null;
+
+                                    while (entries.hasMoreElements()) {
+                                        try {
+                                            final ZipEntry zipEntry = entries.nextElement();
+                                            if (!zipEntry.isDirectory()) {
+                                                final String fileName = zipEntry.getName();
+                                                //                                System.out.println("Handle the csv files: " + fileName);
+                                                log.info("Handle the csv files: {}", fileName);
+                                                int recordDate = guessDate(fileName);
+                                                String tableName = new StringBuilder().append("option_price").append(minType).append("min_").append(recordDate).toString();
+                                                String checkTable = optionPriceService.checkTableExist("public", tableName);
+                                                log.info("Check the tableName[{} - {}] from tableSchema[public]", tableName, checkTable);
+                                                try {
+                                                    if (checkTable == null) {
+                                                        String tablePK = new StringBuilder().append("option_price").append(minType).append("min_").append(recordDate).append("_pk").toString();
+                                                        log.info("Start to create Minute Table[{}], Primary Key={}", tableName, tablePK);
+                                                        optionPriceService.createOptionPriceMinTable(tableName, tablePK);
+                                                        log.info("End to create Minute Table[{}]", tableName);
+                                                    } else {
+                                                        log.info("Table[{}] was exists! Skip to create and load data", tableName);
+                                                        continue;
+                                                    }
+                                                } catch (Exception e) {
+                                                    log.warn("Table[{}] is exist", tableName, e);
+                                                }
+                                                if (fileName.endsWith(".txt")) {
+                                                    try (BufferedReader br = new BufferedReader(new InputStreamReader(zipFile.getInputStream(zipEntry)))) {
+                                                        String line;
+                                                        String colName = br.readLine();
+                                                        log.info("Content Header = {}", colName);
+                                                        int dataCount = 0;
+                                                        long start = System.currentTimeMillis();
+                                                        long start2 = start;
+                                                        List<OptionPriceMin> priceList = new ArrayList<>(optionPriceMinDataBatchSize);
+                                                        while ((line = br.readLine()) != null) {
+                                                            //                                            log.info(line);
+                                                            try {
+                                                                String[] d = line.split("\t");
+                                                                OptionPriceMin optionPrice = new OptionPriceMin();
+                                                                optionPrice.setDatadate(toInt(d[0]));
+                                                                optionPrice.setOptid(d[1]);
+                                                                optionPrice.setExchangecd(d[2]);
+                                                                optionPrice.setUtcoffect(toInt(d[3]));
+                                                                optionPrice.setBartime(d[4]);
+                                                                optionPrice.setCloseprice(toDouble(d[5]));
+                                                                optionPrice.setOpenprice(toDouble(d[6]));
+                                                                optionPrice.setHighprice(toDouble(d[7]));
+                                                                optionPrice.setLowprice(toDouble(d[8]));
+                                                                optionPrice.setVolume(toLong(d[9]));
+                                                                optionPrice.setValue(toDouble(d[10]));
+                                                                optionPrice.setVwap(toDouble(d[11]));
+                                                                optionPrice.setOpenints(toLong(d[12]));
+
+                                                                //optionPriceService.insertOptionPrice(tableName, optionPrice);
+                                                                priceList.add(optionPrice);
+                                                                ++dataCount;
+                                                                if (dataCount % optionPriceDataBatchSize == 0) {
+                                                                    optionPriceService.insertOptionPriceMinBatch(tableName, priceList);
+                                                                    priceList.clear();
+                                                                    long end = System.currentTimeMillis();
+                                                                    log.info("It costs {}s per {} records", (end - start) / 1000.0, optionPriceMinDataBatchSize);
+                                                                    start = end;
+                                                                }
+                                                                if (dataCount % 100_000 == 0) {
+                                                                    long end2 = System.currentTimeMillis();
+                                                                    log.info("*** Persist {} records on {}, it costs {}s per {} records ***", dataCount, tableName, (end2 - start2) / 1000.0, 100_000, 100_000);
+                                                                    start2 = end2;
+                                                                }
+                                                            } catch (Exception e) {
+
+                                                            }
+
+                                                            //                                            System.out.println(Arrays.asList(d));
+                                                        }
+                                                        if (priceList.size() > 0) {
+                                                            optionPriceService.insertOptionPriceMinBatch(tableName, priceList);
+                                                            priceList.clear();
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        } catch (Exception e) {
+                                            log.error("", e);
+                                        }
+                                    }
+                                    zipFile.close();
+                                } catch (IOException e) {
+                                    log.error("", e);
+                                }
+
+                            }
+                        });
+                    }
+                }
+            }
+
+        } catch (final Exception ioe) {
+            log.error("Unhandled exception:", ioe);
             return;
         }
     }

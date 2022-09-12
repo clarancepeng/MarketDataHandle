@@ -2,6 +2,7 @@ package org.alige.data.md.service;
 
 import org.alige.data.md.dao.OptionPriceDao;
 import org.alige.data.md.model.OptionPrice;
+import org.alige.data.md.model.OptionPriceMin;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,5 +31,15 @@ public class OptionPriceServiceImpl implements OptionPriceService {
     @Override
     public void insertOptionPriceBatch(String tableName, List<OptionPrice> priceList) {
         optionPriceDao.insertOptionPriceBatch(tableName, priceList);
+    }
+
+    @Override
+    public void createOptionPriceMinTable(String tableName, String tablePK) {
+        optionPriceDao.createOptionPriceMinTable(tableName);
+    }
+
+    @Override
+    public void insertOptionPriceMinBatch(String tableName, List<OptionPriceMin> priceList) {
+        optionPriceDao.insertOptionPriceMinBatch(tableName, priceList);
     }
 }

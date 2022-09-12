@@ -1,6 +1,7 @@
 package org.alige.data.md.dao;
 
 import org.alige.data.md.model.OptionPrice;
+import org.alige.data.md.model.OptionPriceMin;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,8 @@ public interface OptionPriceDao {
     void insertOptionPrice(@Param("tableName") String tableName, OptionPrice price);
 
     void insertOptionPriceBatch(@Param("tableName") String tableName, List<OptionPrice> priceList);
+
+    void createOptionPriceMinTable(@Param("tableName") String tableName);
+
+    void insertOptionPriceMinBatch(@Param("tableName") String tableName, List<OptionPriceMin> priceList);
 }
