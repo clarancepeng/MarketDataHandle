@@ -100,7 +100,7 @@
         highprice numeric(12, 4),
         lowprice numeric(12, 4),
         volume numeric(20),
-        totalvalue numeric(18, 4),
+        value numeric(18, 4),
         vwap numeric(12, 4),
         openints numeric(20)
         )
@@ -108,7 +108,7 @@
 
     <insert id="insertOptionPriceMinBatch" parameterType="org.alige.data.md.model.OptionPriceMin">
         INSERT INTO ${tableName} (datadate, optid, exchangecd, utcoffect, bartime, closeprice, openprice, highprice,
-        lowprice, volume, totalvalue, vwap, openints)
+        lowprice, volume, value, vwap, openints)
         VALUES
         <foreach collection="priceList" item="price" separator=",">
             (#{price.datadate}, #{price.optid}, #{price.exchangecd}, #{price.utcoffect}, #{price.bartime}, #{price.closeprice}, #{price.openprice}, #{price.highprice},

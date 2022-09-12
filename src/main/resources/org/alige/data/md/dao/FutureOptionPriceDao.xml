@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alige.data.md.dao.FutureOptionPriceDao">
+    <select id="checkTableExist" resultType="string">
+        select table_name FROM information_schema.tables WHERE table_schema=#{dataBaseName} and table_name=#{tableName}
+    </select>
+    <update id="createOptionPriceTable">
+        create table ${tableName} (
+        id  SERIAL PRIMARY KEY,
+        contract_id varchar(31),
+        t_date integer,
+        clearing_day integer,
+        t_time integer,
+        market varchar(9),
+        last_px numeric(14, 4),
+        pre_settle numeric(14, 4),
+        pre_close numeric(14, 4),
+        init_open_ints integer,
+        open_px numeric(14, 4),
+        high_px numeric(14, 4),
+        low_px numeric(14, 4),
+        volume integer,
+        value numeric(18, 2),
+        open_ints numeric(14, 4),
+        close_px numeric(14, 4),
+        settle_px numeric(14, 4),
+        upper_limit numeric(14, 4),
+        lower_limit numeric(14, 4),
+        pre_delta numeric(12, 3),
+        curr_delta numeric(12, 3),
+        avg_px numeric(14, 4),
+        b1 numeric(12, 3),
+        bv1 numeric(11),
+        s1 numeric(12, 3),
+        sv1 numeric(11),
+        b2 numeric(12, 3),
+        bv2 numeric(11),
+        b3 numeric(12, 3),
+        bv3 numeric(11),
+        b4 numeric(12, 3),
+        bv4 numeric(11),
+        b5 numeric(12, 3),
+        bv5 numeric(11),
+        s2 numeric(12, 3),
+        sv2 numeric(11),
+        s3 numeric(12, 3),
+        sv3 numeric(11),
+        s4 numeric(12, 3),
+        sv4 numeric(11),
+        s5 numeric(12, 3),
+        sv5 numeric(11),
+        varieties varchar(8),
+        t_flag char(1),
+        local_tm integer,
+        seq_no integer
+        )
+    </update>
+
+    <insert id="insertOptionPriceBatch" parameterType="org.alige.data.md.model.FutureOptionPrice">
+        INSERT INTO ${tableName} (contract_id,t_date,clearing_day,t_time,market,last_px,pre_settle,pre_close,init_open_ints,
+        open_px,high_px,low_px,volume,value,open_ints,close_px,settle_px,upper_limit,lower_limit,pre_delta,curr_delta,avg_px,
+        b1,bv1,s1,sv1,b2,bv2,b3,bv3,b4,bv4,b5,bv5,s2,sv2,s3,sv3,s4,sv4,s5,sv5,varieties,t_flag,local_tm,seq_no)
+        VALUES
+        <foreach collection="priceList" item="price" separator=",">
+            (#{price.contractId},#{price.tdate},#{price.clearingDate},#{price.ttime},#{price.market},#{price.lastPx},
+            #{price.preSettle},#{price.preClose},#{price.initOpenInts},#{price.openPx},#{price.highPx},#{price.lowPx},
+            #{price.volume},#{price.value},#{price.openInts},#{price.closePx},#{price.settlePx},#{price.upperLimit},
+            #{price.lowerLimit},#{price.preDelta},#{price.currDelta},#{price.avgPx},#{price.b1},#{price.bv1},#{price.s1},
+            #{price.sv1},#{price.b2},#{price.bv2},#{price.b3},#{price.bv3},#{price.b4},#{price.bv4},#{price.b5},#{price.bv5},
+            #{price.s2},#{price.sv2},#{price.s3},#{price.sv3},#{price.s4},#{price.sv4},#{price.s5},#{price.sv5},
+            #{price.varieties},#{price.tflag},#{price.localtime},#{price.seqNo})
+        </foreach>
+    </insert>
+
+    <update id="createOptionPriceMinTable">
+        create table ${tableName} (
+        id  SERIAL PRIMARY KEY,
+        clearing_day integer,
+        t_date integer,
+        contract_id varchar(31),
+        offset integer,
+        market char(5),
+        bar_time varchar(5),
+        close_px numeric(12, 3),
+        open_px numeric(12, 3),
+        high_px numeric(12, 3),
+        low_px numeric(12, 3),
+        volume numeric(11),
+        value numeric(18, 3),
+        vwap numeric(12, 3),
+        open_ints numeric(11)
+        )
+    </update>
+
+    <insert id="insertOptionPriceMinBatch" parameterType="org.alige.data.md.model.FutureOptionPriceMin">
+        INSERT INTO ${tableName} (clearing_day, t_date, contract_id, offset, market, bar_time, close_px, open_px,
+        high_px, low_px, volume, value, vwap, open_ints)
+        VALUES
+        <foreach collection="priceList" item="price" separator=",">
+            (#{price.clearingDay}, #{price.tdate}, #{price.contractId}, #{price.offset}, #{price.market}, #{price.barTime}, #{price.closePx}, #{price.openPx},
+            #{price.highPx}, #{price.lowPx}, #{price.volume}, #{price.value}, #{price.vwap}, #{price.openInts})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alige.data.md.dao.IndexOptionPriceDao">
+    <select id="checkTableExist" resultType="string">
+        select table_name FROM information_schema.tables WHERE table_schema=#{dataBaseName} and table_name=#{tableName}
+    </select>
+    <update id="createOptionPriceTable">
+        create table ${tableName} (
+        id  SERIAL PRIMARY KEY,
+        instrument_id varchar(31),
+        market varchar(9),
+        t_date integer,
+        t_time varchar(30),
+        last_px numeric(12, 3),
+        open_px numeric(12, 3),
+        high_px numeric(12, 3),
+        low_px numeric(12, 3),
+        volume numeric(15),
+        value numeric(18, 3),
+        open_int numeric(11),
+        pre_settle_px numeric(12, 3),
+        pre_close_px numeric(12, 3),
+        pre_open_int numeric(11),
+        close_px numeric(12, 3),
+        settle_px numeric(12, 3),
+        upper_limit numeric(12, 3),
+        lower_limit numeric(12, 3),
+
+        pre_delta numeric(12, 3),
+        curr_delta numeric(12, 3),
+        bid_price1 numeric(12, 3),
+        bid_volume1 numeric(11),
+        ask_price1 numeric(12, 3),
+        ask_volume1 numeric(11),
+        bid_price2 numeric(12, 3),
+        bid_volume2 numeric(11),
+        ask_price2 numeric(12, 3),
+        ask_volume2 numeric(11),
+        bid_price3 numeric(12, 3),
+        bid_volume3 numeric(11),
+        ask_price3 numeric(12, 3),
+        ask_volume3 numeric(11),
+        bid_price4 numeric(12, 3),
+        bid_volume4 numeric(11),
+        ask_price4 numeric(12, 3),
+        ask_volume4 numeric(11),
+        bid_price5 numeric(12, 3),
+        bid_volume5 numeric(11),
+        ask_price5 numeric(12, 3),
+        ask_volume5 numeric(11)
+        )
+    </update>
+
+    <insert id="insertOptionPriceBatch" parameterType="org.alige.data.md.model.IndexOptionPrice">
+        INSERT INTO ${tableName} (instrument_id,market,t_date,t_time,last_px,open_px,high_px,low_px,volume,value,open_int,
+        pre_settle_px,pre_close_px,pre_open_int,close_px,settle_px,upper_limit,lower_limit,pre_delta,curr_delta,bid_price1,
+        bid_volume1,ask_price1,ask_volume1,bid_price2,bid_volume2,ask_price2,ask_volume2,bid_price3,bid_volume3,ask_price3,
+        ask_volume3,bid_price4,bid_volume4,ask_price4,ask_volume4,bid_price5,bid_volume5,ask_price5,ask_volume5)
+        VALUES
+        <foreach collection="priceList" item="price" separator=",">
+            (#{price.instrumentId}, #{price.market}, #{price.tdate}, #{price.ttime}, #{price.lastPx}, #{price.openPx},
+            #{price.highPx}, #{price.lowPx}, #{price.volume}, #{price.value},#{price.openInt}, #{price.preSettlePx},
+            #{price.preClosePx}, #{price.preOpenInt}, #{price.closePx}, #{price.settlePx}, #{price.upperLimit},
+            #{price.lowerLimit}, #{price.preDelta}, #{price.currDelta}, #{price.bidPrice1}, #{price.bidVolume1},
+            #{price.askPrice1}, #{price.askVolume1}, #{price.bidPrice2}, #{price.bidVolume2}, #{price.askPrice2},
+            #{price.askVolume2}, #{price.bidPrice3}, #{price.bidVolume3}, #{price.askPrice3}, #{price.askVolume3},
+            #{price.bidPrice4}, #{price.bidVolume4}, #{price.askPrice4}, #{price.askVolume4}, #{price.bidPrice5},
+            #{price.bidVolume5}, #{price.askPrice5}, #{price.askVolume5})
+        </foreach>
+    </insert>
+
+    <update id="createOptionPriceMinTable">
+        create table ${tableName} (
+        id  SERIAL PRIMARY KEY,
+        t_date integer,
+        instrument_id varchar(31),
+        market char(4),
+        bar_time varchar(5),
+        open_price numeric(12, 4),
+        high_price numeric(12, 4),
+        low_price numeric(12, 4),
+        close_price numeric(12, 4),
+        total_volume numeric(20),
+        total_value numeric(18, 4),
+        vwap numeric(12, 4)
+        )
+    </update>
+
+    <insert id="insertOptionPriceMinBatch" parameterType="org.alige.data.md.model.IndexOptionPriceMin">
+        INSERT INTO ${tableName} (datadate, optid, exchangecd, utcoffect, bartime, closeprice, openprice, highprice,
+        lowprice, volume, totalvalue, vwap, openints)
+        VALUES
+        <!--
+        private int tdate;
+        private String instrumentId;
+        private String market;
+        private String barTime;
+        private double openPrice;
+        private double highPrice;
+        private double lowPrice;
+        private double closePrice;
+        private double totalVolume;
+        private double totalValue;
+        private double vwap;
+        -->
+        <foreach collection="priceList" item="price" separator=",">
+            (#{price.tdate}, #{price.instrumentId}, #{price.market}, #{price.barTime}, #{price.openPrice}, #{price.highPrice}, #{price.lowPrice},
+            #{price.closePrice}, #{price.totalVolume}, #{price.totalValue}, #{price.vwap})
+        </foreach>
+    </insert>
+</mapper>
