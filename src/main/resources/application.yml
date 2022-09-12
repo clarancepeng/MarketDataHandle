@@ -1,0 +1,25 @@
+server:
+  port: 8082
+  compression:
+    enabled: true
+
+mybatis:
+  type-aliases-package: org.alige.data.md.model
+  mapper-locations: classpath:org.alige.data.md.dao/*.xml
+  #executor-type: batch
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/md
+    username: postgres
+    password: 123456
+
+option_price:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\option\option_price
+    batch_size: 400
+
+  logging:
+    level:
+      org.alige.data.md.dao: info

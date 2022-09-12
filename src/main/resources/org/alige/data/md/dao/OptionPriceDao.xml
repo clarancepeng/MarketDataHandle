@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.alige.data.md.dao.OptionPriceDao">
+    <select id="checkTableExist" resultType="string">
+        select table_name FROM information_schema.tables WHERE table_schema=#{dataBaseName} and table_name=#{tableName}
+    </select>
+    <update id="createOptionPriceTable">
+        create table ${tableName} (
+        id  SERIAL PRIMARY KEY,
+        tdate integer,
+        uptime integer,
+        origintime integer,
+        origintimems integer,
+        optid varchar(31),
+        presettle numeric(12, 4),
+        settlepx numeric(12, 4),
+        openpx numeric(12, 4),
+        highpx numeric(12, 4),
+        lowpx numeric(12, 4),
+        lastpx numeric(12, 4),
+        closepx numeric(12, 4),
+        auctionpx numeric(12, 4),
+        auctionqty numeric(15),
+        openints numeric(15),
+        volume numeric(20),
+        value numeric(18, 2),
+        b1 numeric(12, 4),
+        bv1 numeric(11),
+        b2 numeric(12, 4),
+        bv2 numeric(11),
+        b3 numeric(12, 4),
+        bv3 numeric(11),
+        b4 numeric(12, 4),
+        bv4 numeric(11),
+        b5 numeric(12, 4),
+        bv5 numeric(11),
+        s1 numeric(12, 4),
+        sv1 numeric(11),
+        s2 numeric(12, 4),
+        sv2 numeric(11),
+        s3 numeric(12, 4),
+        sv3 numeric(11),
+        s4 numeric(12, 4),
+        sv4 numeric(11),
+        s5 numeric(12, 4),
+        sv5 numeric(11),
+        local_time char(25),
+        market varchar(4),
+        unix numeric(20),
+        source varchar(6),
+        datastatus integer,
+        tradingphase varchar(9),
+        imagestatus integer,
+        seqno integer,
+        preclosepx  numeric(12, 4),
+        numtrade integer
+        <!--,        CONSTRAINT ${tablePK} PRIMARY KEY(uptime, optid, seqno)-->
+        )
+    </update>
+
+    <insert id="insertOptionPrice">
+        INSERT INTO ${tableName} (tdate, uptime, origintime, origintimems, optid, presettle, settlepx, openpx,
+        highpx, lowpx, lastpx, closepx, auctionpx, auctionqty, openints, volume, value, b1, bv1, b2, bv2, b3, bv3,
+        b4, bv4, b5, bv5, s1, sv1, s2, sv2, s3, sv3, s4, sv4, s5, sv5, local_time, market, unix, source, datastatus,
+        tradingphase, imagestatus, seqno, preclosepx, numtrade)
+        VALUES (#{price.tdate}, #{price.uptime}, #{price.origintime}, #{price.origintimems}, #{price.optid}, #{price.presettle}, #{price.settlepx}, #{price.openpx},
+        #{price.highpx}, #{price.lowpx}, #{price.lastpx}, #{price.closepx}, #{price.auctionpx}, #{price.auctionqty}, #{price.openints}, #{price.volume}, #{price.value},
+        #{price.b1}, #{price.bv1}, #{price.b2}, #{price.bv2}, #{price.b3}, #{price.bv3}, #{price.b4}, #{price.bv4}, #{price.b5}, #{price.bv5}, #{price.s1}, #{price.sv1}, #{price.s2}, #{price.sv2}, #{price.s3},
+        #{price.sv3}, #{price.s4}, #{price.sv4}, #{price.s5}, #{price.sv5}, #{price.localtime}, #{price.market}, #{price.unix}, #{price.source}, #{price.datastatus},
+        #{price.tradingphase}, #{price.imagestatus}, #{price.seqno}, #{price.preclosepx}, #{price.numtrade})
+    </insert>
+
+    <insert id="insertOptionPriceBatch" parameterType="org.alige.data.md.model.OptionPrice">
+        INSERT INTO ${tableName} (tdate, uptime, origintime, origintimems, optid, presettle, settlepx, openpx,
+        highpx, lowpx, lastpx, closepx, auctionpx, auctionqty, openints, volume, value, b1, bv1, b2, bv2, b3, bv3,
+        b4, bv4, b5, bv5, s1, sv1, s2, sv2, s3, sv3, s4, sv4, s5, sv5, local_time, market, unix, source, datastatus,
+        tradingphase, imagestatus, seqno, preclosepx, numtrade)
+        VALUES
+        <foreach collection="priceList" item="price" separator=",">
+            (#{price.tdate}, #{price.uptime}, #{price.origintime}, #{price.origintimems}, #{price.optid}, #{price.presettle}, #{price.settlepx}, #{price.openpx},
+            #{price.highpx}, #{price.lowpx}, #{price.lastpx}, #{price.closepx}, #{price.auctionpx}, #{price.auctionqty}, #{price.openints}, #{price.volume}, #{price.value},
+            #{price.b1}, #{price.bv1}, #{price.b2}, #{price.bv2}, #{price.b3}, #{price.bv3}, #{price.b4}, #{price.bv4}, #{price.b5}, #{price.bv5}, #{price.s1}, #{price.sv1}, #{price.s2}, #{price.sv2}, #{price.s3},
+            #{price.sv3}, #{price.s4}, #{price.sv4}, #{price.s5}, #{price.sv5}, #{price.localtime}, #{price.market}, #{price.unix}, #{price.source}, #{price.datastatus},
+            #{price.tradingphase}, #{price.imagestatus}, #{price.seqno}, #{price.preclosepx}, #{price.numtrade})
+        </foreach>
+    </insert>
+</mapper>

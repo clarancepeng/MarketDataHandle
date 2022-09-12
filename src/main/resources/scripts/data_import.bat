@@ -1,0 +1,1 @@
+java -cp ".;./libs/*;./libs/thirdparty/*" org.alige.data.md.DataImport
