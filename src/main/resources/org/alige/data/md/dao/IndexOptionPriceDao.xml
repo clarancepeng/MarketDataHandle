@@ -84,30 +84,18 @@
         close_price numeric(12, 4),
         total_volume numeric(20),
         total_value numeric(18, 4),
-        vwap numeric(12, 4)
+        vwap numeric(12, 4),
+        open_ints numeric(20)
         )
     </update>
 
     <insert id="insertOptionPriceMinBatch" parameterType="org.alige.data.md.model.IndexOptionPriceMin">
-        INSERT INTO ${tableName} (datadate, optid, exchangecd, utcoffect, bartime, closeprice, openprice, highprice,
-        lowprice, volume, totalvalue, vwap, openints)
+        INSERT INTO ${tableName} (t_date, instrument_id, market, bar_time, open_price, high_price, low_price,
+        close_price, total_volume, total_value, vwap, open_ints)
         VALUES
-        <!--
-        private int tdate;
-        private String instrumentId;
-        private String market;
-        private String barTime;
-        private double openPrice;
-        private double highPrice;
-        private double lowPrice;
-        private double closePrice;
-        private double totalVolume;
-        private double totalValue;
-        private double vwap;
-        -->
         <foreach collection="priceList" item="price" separator=",">
             (#{price.tdate}, #{price.instrumentId}, #{price.market}, #{price.barTime}, #{price.openPrice}, #{price.highPrice}, #{price.lowPrice},
-            #{price.closePrice}, #{price.totalVolume}, #{price.totalValue}, #{price.vwap})
+            #{price.closePrice}, #{price.totalVolume}, #{price.totalValue}, #{price.vwap}, #{price.openInterest})
         </foreach>
     </insert>
 </mapper>

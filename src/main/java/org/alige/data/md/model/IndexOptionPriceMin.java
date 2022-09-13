@@ -19,4 +19,5 @@ public class IndexOptionPriceMin {
     private double totalVolume;
     private double totalValue;
     private double vwap;
+    private long openInterest;
 }

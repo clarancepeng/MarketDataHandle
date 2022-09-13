@@ -15,6 +15,7 @@ spring:
     username: postgres
     password: 123456
 
+### Stock Option ####
 option_price:
   data:
     dir: D:\BaiduNetdiskDownload\L1_data\option\option_price
@@ -44,6 +45,68 @@ option_price30min:
 option_price60min:
   data:
     dir: D:\BaiduNetdiskDownload\L1_data\option\option_price60min
+
+### Index Option ###
+idx_opt_price:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\idx_opt\idx_opt_price
+    batch_size: 400
+
+idx_opt_pricemin:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\option\option_pricemin
+    batch_size: 400
+
+idx_opt_price03min:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\idx_opt\idx_opt_price03min
+
+idx_opt_price05min:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\idx_opt\idx_opt_price05min
+
+idx_opt_price15min:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\idx_opt\idx_opt_price15min
+
+idx_opt_price30min:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\idx_opt\idx_opt_price30min
+
+idx_opt_price60min:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\idx_opt\idx_opt_price60min
+
+### Future Option ###
+future_opt_price:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\future_opt\future_opt_price
+    batch_size: 400
+
+future_opt_pricemin:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\option\option_pricemin
+    batch_size: 400
+
+future_opt_price03min:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\future_opt\future_opt_price03min
+
+future_opt_price05min:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\future_opt\future_opt_price05min
+
+future_opt_price15min:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\future_opt\future_opt_price15min
+
+future_opt_price30min:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\future_opt\future_opt_price30min
+
+future_opt_price60min:
+  data:
+    dir: D:\BaiduNetdiskDownload\L1_data\future_opt\future_opt_price60min
 
   logging:
     level:
