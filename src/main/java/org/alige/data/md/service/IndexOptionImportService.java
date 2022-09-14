@@ -59,7 +59,7 @@ public class IndexOptionImportService {
     @Value("${idx_opt_pricemin.data.batch_size: 300}")
     private int optionPriceMinDataBatchSize = 300;
 
-    public void importAllStockOption() {
+    public void importAllIndexOption() {
         try {
             log.info("Begin to import Index Option Tick Data");
             zipImportOptionTickData();
