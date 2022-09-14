@@ -3,8 +3,6 @@ package org.alige.data.md.service;
 import lombok.extern.slf4j.Slf4j;
 import org.alige.data.md.model.FutureOptionPrice;
 import org.alige.data.md.model.FutureOptionPriceMin;
-import org.alige.data.md.model.IndexOptionPrice;
-import org.alige.data.md.model.IndexOptionPriceMin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,7 +28,7 @@ import static org.alige.data.md.utils.Utils.*;
 @Slf4j
 public class FutureOptionImportService {
     @Autowired
-    private FutureOptionPriceService indexOptionPriceService;
+    private FutureOptionPriceService futureOptionPriceService;
 
     @Value("${future_opt_price.data.dir}")
     private String optionPriceDataDir;
@@ -117,13 +115,13 @@ public class FutureOptionImportService {
                                                 log.info("Handle the csv files: {}", fileName);
                                                 int recordDate = guessDate(fileName);
                                                 String tableName = new StringBuilder().append("future_opt_price_").append(recordDate).toString();
-                                                String checkTable = indexOptionPriceService.checkTableExist("public", tableName);
+                                                String checkTable = futureOptionPriceService.checkTableExist("public", tableName);
                                                 log.info("Check the tableName[{} - {}] from tableSchema[public]", tableName, checkTable);
                                                 try {
                                                     if (checkTable == null) {
                                                         String tablePK = new StringBuilder().append("future_opt_price_").append(recordDate).append("_pk").toString();
                                                         log.info("Start to create Table[{}], Primary Key={}", tableName, tablePK);
-                                                        indexOptionPriceService.createOptionPriceTable(tableName, tablePK);
+                                                        futureOptionPriceService.createOptionPriceTable(tableName, tablePK);
                                                         log.info("End to create Table[{}]", tableName);
                                                     } else {
                                                         log.info("Table[{}] was exists! Skip to create and load data", tableName);
@@ -199,7 +197,7 @@ public class FutureOptionImportService {
                                                                 priceList.add(optionPrice);
                                                                 ++dataCount;
                                                                 if (dataCount % optionPriceDataBatchSize == 0) {
-                                                                    indexOptionPriceService.insertOptionPriceBatch(tableName, priceList);
+                                                                    futureOptionPriceService.insertOptionPriceBatch(tableName, priceList);
                                                                     priceList.clear();
                                                                     long end = System.currentTimeMillis();
                                                                     log.info("It costs {}s per {} records", (end - start) / 1000.0, optionPriceDataBatchSize);
@@ -217,7 +215,7 @@ public class FutureOptionImportService {
                                                             //                                            System.out.println(Arrays.asList(d));
                                                         }
                                                         if (priceList.size() > 0) {
-                                                            indexOptionPriceService.insertOptionPriceBatch(tableName, priceList);
+                                                            futureOptionPriceService.insertOptionPriceBatch(tableName, priceList);
                                                             priceList.clear();
                                                         }
                                                     }
@@ -275,14 +273,14 @@ public class FutureOptionImportService {
                                                 //                                System.out.println("Handle the csv files: " + fileName);
                                                 log.info("Handle the csv files: {}", fileName);
                                                 int recordDate = guessDate(fileName);
-                                                String tableName = new StringBuilder().append("option_price").append(minType).append("min_").append(recordDate).toString();
-                                                String checkTable = indexOptionPriceService.checkTableExist("public", tableName);
+                                                String tableName = new StringBuilder().append("future_opt_price").append(minType).append("min_").append(recordDate).toString();
+                                                String checkTable = futureOptionPriceService.checkTableExist("public", tableName);
                                                 log.info("Check the tableName[{} - {}] from tableSchema[public]", tableName, checkTable);
                                                 try {
                                                     if (checkTable == null) {
-                                                        String tablePK = new StringBuilder().append("option_price").append(minType).append("min_").append(recordDate).append("_pk").toString();
+                                                        String tablePK = new StringBuilder().append("future_opt_price").append(minType).append("min_").append(recordDate).append("_pk").toString();
                                                         log.info("Start to create Minute Table[{}], Primary Key={}", tableName, tablePK);
-                                                        indexOptionPriceService.createOptionPriceMinTable(tableName, tablePK);
+                                                        futureOptionPriceService.createOptionPriceMinTable(tableName, tablePK);
                                                         log.info("End to create Minute Table[{}]", tableName);
                                                     } else {
                                                         log.info("Table[{}] was exists! Skip to create and load data", tableName);
@@ -318,12 +316,14 @@ public class FutureOptionImportService {
                                                                 optionPrice.setVolume(toInt(d[10]));
                                                                 optionPrice.setValue(toDouble(d[11]));
                                                                 optionPrice.setVwap(toDouble(d[12]));
-                                                                optionPrice.setOpenInts(toInt(d[13]));
+                                                                if(d.length > 13) {
+                                                                    optionPrice.setOpenInts(toInt(d[13]));
+                                                                }
                                                                 //optionPriceService.insertOptionPrice(tableName, optionPrice);
                                                                 priceList.add(optionPrice);
                                                                 ++dataCount;
                                                                 if (dataCount % optionPriceDataBatchSize == 0) {
-                                                                    indexOptionPriceService.insertOptionPriceMinBatch(tableName, priceList);
+                                                                    futureOptionPriceService.insertOptionPriceMinBatch(tableName, priceList);
                                                                     priceList.clear();
                                                                     long end = System.currentTimeMillis();
                                                                     log.info("It costs {}s per {} records", (end - start) / 1000.0, optionPriceMinDataBatchSize);
@@ -341,7 +341,7 @@ public class FutureOptionImportService {
                                                             //                                            System.out.println(Arrays.asList(d));
                                                         }
                                                         if (priceList.size() > 0) {
-                                                            indexOptionPriceService.insertOptionPriceMinBatch(tableName, priceList);
+                                                            futureOptionPriceService.insertOptionPriceMinBatch(tableName, priceList);
                                                             priceList.clear();
                                                         }
                                                     }

@@ -171,23 +171,24 @@ public class IndexOptionImportService {
                                                                 optionPrice.setBidVolume1(toInt(d[21]));
                                                                 optionPrice.setAskPrice1(toDouble(d[22]));
                                                                 optionPrice.setAskVolume1(toInt(d[23]));
-                                                                optionPrice.setBidPrice2(toDouble(d[24]));
-                                                                optionPrice.setBidVolume2(toInt(d[25]));
-                                                                optionPrice.setAskPrice2(toDouble(d[26]));
-                                                                optionPrice.setAskVolume2(toInt(d[27]));
-                                                                optionPrice.setBidPrice3(toDouble(d[28]));
-                                                                optionPrice.setBidVolume3(toInt(d[29]));
-                                                                optionPrice.setAskPrice3(toDouble(d[30]));
-                                                                optionPrice.setAskVolume3(toInt(d[31]));
-                                                                optionPrice.setBidPrice4(toDouble(d[32]));
-                                                                optionPrice.setBidVolume4(toInt(d[33]));
-                                                                optionPrice.setAskPrice4(toDouble(d[34]));
-                                                                optionPrice.setAskVolume4(toInt(d[35]));
-                                                                optionPrice.setBidPrice5(toDouble(d[36]));
-                                                                optionPrice.setBidVolume5(toInt(d[37]));
-                                                                optionPrice.setAskPrice5(toDouble(d[38]));
-                                                                optionPrice.setAskVolume5(toInt(d[39]));
-
+                                                                if(d.length > 24) {
+                                                                    optionPrice.setBidPrice2(toDouble(d[24]));
+                                                                    optionPrice.setBidVolume2(toInt(d[25]));
+                                                                    optionPrice.setAskPrice2(toDouble(d[26]));
+                                                                    optionPrice.setAskVolume2(toInt(d[27]));
+                                                                    optionPrice.setBidPrice3(toDouble(d[28]));
+                                                                    optionPrice.setBidVolume3(toInt(d[29]));
+                                                                    optionPrice.setAskPrice3(toDouble(d[30]));
+                                                                    optionPrice.setAskVolume3(toInt(d[31]));
+                                                                    optionPrice.setBidPrice4(toDouble(d[32]));
+                                                                    optionPrice.setBidVolume4(toInt(d[33]));
+                                                                    optionPrice.setAskPrice4(toDouble(d[34]));
+                                                                    optionPrice.setAskVolume4(toInt(d[35]));
+                                                                    optionPrice.setBidPrice5(toDouble(d[36]));
+                                                                    optionPrice.setBidVolume5(toInt(d[37]));
+                                                                    optionPrice.setAskPrice5(toDouble(d[38]));
+                                                                    optionPrice.setAskVolume5(toInt(d[39]));
+                                                                }
                                                                 //optionPriceService.insertOptionPrice(tableName, optionPrice);
                                                                 priceList.add(optionPrice);
                                                                 ++dataCount;
@@ -268,12 +269,12 @@ public class IndexOptionImportService {
                                                 //                                System.out.println("Handle the csv files: " + fileName);
                                                 log.info("Handle the csv files: {}", fileName);
                                                 int recordDate = guessDate(fileName);
-                                                String tableName = new StringBuilder().append("option_price").append(minType).append("min_").append(recordDate).toString();
+                                                String tableName = new StringBuilder().append("idx_opt_price").append(minType).append("min_").append(recordDate).toString();
                                                 String checkTable = indexOptionPriceService.checkTableExist("public", tableName);
                                                 log.info("Check the tableName[{} - {}] from tableSchema[public]", tableName, checkTable);
                                                 try {
                                                     if (checkTable == null) {
-                                                        String tablePK = new StringBuilder().append("option_price").append(minType).append("min_").append(recordDate).append("_pk").toString();
+                                                        String tablePK = new StringBuilder().append("idx_opt_price").append(minType).append("min_").append(recordDate).append("_pk").toString();
                                                         log.info("Start to create Minute Table[{}], Primary Key={}", tableName, tablePK);
                                                         indexOptionPriceService.createOptionPriceMinTable(tableName, tablePK);
                                                         log.info("End to create Minute Table[{}]", tableName);
@@ -310,7 +311,9 @@ public class IndexOptionImportService {
                                                                 optionPrice.setTotalVolume(toLong(d[9]));
                                                                 optionPrice.setTotalValue(toDouble(d[10]));
                                                                 optionPrice.setVwap(toDouble(d[11]));
-                                                                optionPrice.setOpenInterest(toLong(d[12]));
+                                                                if(d.length > 12) {
+                                                                    optionPrice.setOpenInterest(toLong(d[12]));
+                                                                }
                                                                 //optionPriceService.insertOptionPrice(tableName, optionPrice);
                                                                 priceList.add(optionPrice);
                                                                 ++dataCount;
@@ -344,8 +347,9 @@ public class IndexOptionImportService {
                                         }
                                     }
                                     zipFile.close();
-                                } catch (IOException e) {
+                                } catch (Exception e) {
                                     log.error("", e);
+
                                 }
 
                             }

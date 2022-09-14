@@ -50,7 +50,49 @@
         bid_volume5 numeric(11),
         ask_price5 numeric(12, 3),
         ask_volume5 numeric(11)
-        )
+        );
+        comment on table ${tableName} is '指数期权数据表';
+        comment on column ${tableName}.id is '数据ID';
+        comment on column ${tableName}.instrument_id is '合约代码';
+        comment on column ${tableName}.market is '市场';
+        comment on column ${tableName}.t_date is '交易日期';
+        comment on column ${tableName}.t_time  is '交易时间';
+        comment on column ${tableName}.last_px is '最新价';
+        comment on column ${tableName}.open_px is '开盘价';
+        comment on column ${tableName}.high_px is '最高价';
+        comment on column ${tableName}.low_px is '最低价';
+        comment on column ${tableName}.volume is '交易量';
+        comment on column ${tableName}.value is '交易额';
+        comment on column ${tableName}.open_int is '开仓量';
+        comment on column ${tableName}.pre_settle_px is '昨结算价';
+        comment on column ${tableName}.pre_close_px is '昨收盘价';
+        comment on column ${tableName}.pre_open_int is '昨开仓量';
+        comment on column ${tableName}.close_px is '收盘价';
+        comment on column ${tableName}.settle_px is '结算价';
+        comment on column ${tableName}.upper_limit is '涨停价';
+        comment on column ${tableName}.lower_limit is '跌停价';
+        comment on column ${tableName}.pre_delta is '昨delta';
+        comment on column ${tableName}.curr_delta is '当前delta';
+        comment on column ${tableName}.bid_price1 is '买一价';
+        comment on column ${tableName}.bid_volume1 is '买一量';
+        comment on column ${tableName}.ask_price1 is '卖一价';
+        comment on column ${tableName}.ask_volume1 is '卖一量';
+        comment on column ${tableName}.bid_price2 is '买二价';
+        comment on column ${tableName}.bid_volume2 is '买二量';
+        comment on column ${tableName}.ask_price2 is '卖二价';
+        comment on column ${tableName}.ask_volume2 is '卖二量';
+        comment on column ${tableName}.bid_price3 is '买三价';
+        comment on column ${tableName}.bid_volume3 is '买三量';
+        comment on column ${tableName}.ask_price3 is '卖三价';
+        comment on column ${tableName}.ask_volume3 is '卖三量';
+        comment on column ${tableName}.bid_price4 is '买四价';
+        comment on column ${tableName}.bid_volume4 is '买四量';
+        comment on column ${tableName}.ask_price4 is '卖四价';
+        comment on column ${tableName}.ask_volume4 is '卖四量';
+        comment on column ${tableName}.bid_price5 is '买五价';
+        comment on column ${tableName}.bid_volume5 is '买五量';
+        comment on column ${tableName}.ask_price5 is '卖五价';
+        comment on column ${tableName}.ask_volume5 is '卖五量';
     </update>
 
     <insert id="insertOptionPriceBatch" parameterType="org.alige.data.md.model.IndexOptionPrice">
@@ -86,7 +128,21 @@
         total_value numeric(18, 4),
         vwap numeric(12, 4),
         open_ints numeric(20)
-        )
+        );
+        comment on table ${tableName} is '指数期权分钟数据表';
+        comment on column ${tableName}.id is '数据ID';
+        comment on column ${tableName}.t_date is '交易日期';
+        comment on column ${tableName}.instrument_id is '合约代码';
+        comment on column ${tableName}.market is '市场';
+        comment on column ${tableName}.bar_time is '聚合时间';
+        comment on column ${tableName}.open_price is '初始价';
+        comment on column ${tableName}.high_price is '最高价';
+        comment on column ${tableName}.low_price is '最低价';
+        comment on column ${tableName}.close_price is '收盘价';
+        comment on column ${tableName}.total_volume is '总交易量';
+        comment on column ${tableName}.total_value is '总交易额';
+        comment on column ${tableName}.vwap is '加权平均价';
+        comment on column ${tableName}.open_ints is '开仓量';
     </update>
 
     <insert id="insertOptionPriceMinBatch" parameterType="org.alige.data.md.model.IndexOptionPriceMin">
