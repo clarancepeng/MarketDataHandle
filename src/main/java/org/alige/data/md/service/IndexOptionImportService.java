@@ -204,7 +204,7 @@ public class IndexOptionImportService {
                                                                     start2 = end2;
                                                                 }
                                                             } catch (Exception e) {
-
+                                                                log.error("", e);
                                                             }
 
                                                             //                                            System.out.println(Arrays.asList(d));
@@ -327,7 +327,7 @@ public class IndexOptionImportService {
                                                                     start2 = end2;
                                                                 }
                                                             } catch (Exception e) {
-
+                                                                log.error("", e);
                                                             }
 
                                                             //                                            System.out.println(Arrays.asList(d));

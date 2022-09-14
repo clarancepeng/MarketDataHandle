@@ -146,69 +146,54 @@ public class FutureOptionImportService {
                                                             try {
                                                                 String[] d = line.split("\t");
                                                                 FutureOptionPrice optionPrice = new FutureOptionPrice();
-                                                                optionPrice.setTdate(toInt(d[0]));
-                                                                optionPrice.setTtime(toInt(d[1]));
-                                                                optionPrice.setUpdateMilliSec(toInt(d[2]));
-                                                                optionPrice.setContractId(d[3]);
+                                                                optionPrice.setContractId(d[0]);
+                                                                optionPrice.setTdate(toInt(d[1]));
+                                                                optionPrice.setClearingDay(toInt(d[2]));
+                                                                optionPrice.setTtime(toInt(d[3]));
                                                                 optionPrice.setMarket(d[4]);
-                                                                optionPrice.setContractName(d[5]);
-                                                                optionPrice.setLastPx(toDouble(d[6]));
-                                                                optionPrice.setHighPx(toDouble(d[7]));
-                                                                optionPrice.setLowPx(toDouble(d[8]));
-                                                                optionPrice.setCq(Long.parseLong(d[9]));
-                                                                optionPrice.setCm(toDouble(d[10]));
-                                                                optionPrice.setTq(toInt(d[12]));
-                                                                optionPrice.setTm(toDouble(d[13]));
-                                                                optionPrice.setLastQty(toInt(d[14]));
-                                                                optionPrice.setInitOpenInts(toInt(d[15]));
-                                                                optionPrice.setOpenInts(toInt(d[16]));
-                                                                optionPrice.setIntsChg(toInt(d[17]));
-                                                                optionPrice.setUpperLimit(toDouble(d[18]));
-                                                                optionPrice.setLowerLimit(toDouble(d[19]));
-                                                                optionPrice.setPreSettle(toDouble(d[20]));
-                                                                optionPrice.setPreClose(toDouble(d[21]));
-                                                                optionPrice.setS1(toDouble(d[22]));
-                                                                optionPrice.setB1(toDouble(d[23]));
-                                                                optionPrice.setSv1(toInt(d[24]));
-                                                                optionPrice.setBv1(toInt(d[25]));
-                                                                optionPrice.setOpenPx(toDouble(d[26]));
-                                                                optionPrice.setClosePx(toDouble(d[27]));
-                                                                optionPrice.setSettlePx(toDouble(d[28]));
-                                                                optionPrice.setLifeLow(toDouble(d[29]));
-                                                                optionPrice.setLifeHigh(toDouble(d[30]));
-                                                                optionPrice.setAvgPx(toDouble(d[31]));
-                                                                optionPrice.setBidImplyQty(toInt(d[32]));
-                                                                optionPrice.setAskImplyQty(toInt(d[33]));
-                                                                optionPrice.setS5(toDouble(d[38]));
-                                                                optionPrice.setS4(toDouble(d[39]));
-                                                                optionPrice.setS3(toDouble(d[40]));
-                                                                optionPrice.setS2(toDouble(d[41]));
-                                                                optionPrice.setB2(toDouble(d[42]));
-                                                                optionPrice.setB3(toDouble(d[43]));
-                                                                optionPrice.setB4(toDouble(d[44]));
-                                                                optionPrice.setB5(toDouble(d[45]));
-                                                                optionPrice.setSv5(toInt(d[46]));
-                                                                optionPrice.setSv4(toInt(d[47]));
-                                                                optionPrice.setSv3(toInt(d[48]));
-                                                                optionPrice.setSv2(toInt(d[49]));
-                                                                optionPrice.setBv2(toInt(d[50]));
-                                                                optionPrice.setBv3(toInt(d[51]));
-                                                                optionPrice.setBv4(toInt(d[52]));
-                                                                optionPrice.setBv5(toInt(d[53]));
-                                                                optionPrice.setPreDelta(toDouble(d[54]));
-                                                                optionPrice.setCurrDelta(toDouble(d[55]));
-                                                                optionPrice.setLocalTm(d[56]);
-                                                                optionPrice.setMarket(d[57]);
-                                                                optionPrice.setChg(toDouble(d[58]));
-                                                                optionPrice.setChgPct(toDouble(d[59]));
-                                                                optionPrice.setSettleGroupId(d[61]);
-                                                                optionPrice.setSettleId(toInt(d[62]));
-                                                                optionPrice.setClearingDay(toInt(d[64]));
-                                                                optionPrice.setMflag(d[65]);
-                                                                optionPrice.setSource(d[66]);
-                                                                optionPrice.setCommodityNo(d[67]);
-                                                                optionPrice.setOffset(toInt(d[68]));
-                                                                optionPrice.setTflag(d[69]);
+                                                                optionPrice.setLastPx(toDouble(d[5]));
+                                                                optionPrice.setPreSettle(toDouble(d[6]));
+                                                                optionPrice.setPreClose(toDouble(d[7]));
+                                                                optionPrice.setInitOpenInts(toInt(d[8]));
+                                                                optionPrice.setOpenPx(toDouble(d[9]));
+                                                                optionPrice.setHighPx(toDouble(d[10]));
+                                                                optionPrice.setLowPx(toDouble(d[11]));
+                                                                optionPrice.setVolume(toInt(d[12]));
+                                                                optionPrice.setValue(toDouble(d[13]));
+                                                                optionPrice.setOpenInts(toInt(d[14]));
+                                                                optionPrice.setClosePx(toDouble(d[15]));
+                                                                optionPrice.setSettlePx(toDouble(d[16]));
+                                                                optionPrice.setUpperLimit(toDouble(d[17]));
+                                                                optionPrice.setLowerLimit(toDouble(d[18]));
+                                                                optionPrice.setPreDelta(toDouble(d[19]));
+                                                                optionPrice.setCurrDelta(toDouble(d[20]));
+                                                                optionPrice.setAvgPx(toDouble(d[21]));
+
+                                                                optionPrice.setB1(toDouble(d[22]));
+                                                                optionPrice.setBv1(toInt(d[23]));
+                                                                optionPrice.setS1(toDouble(d[24]));
+                                                                optionPrice.setSv1(toInt(d[25]));
+
+                                                                optionPrice.setB2(toDouble(d[26]));
+                                                                optionPrice.setBv2(toInt(d[27]));
+                                                                optionPrice.setB3(toDouble(d[28]));
+                                                                optionPrice.setBv3(toInt(d[29]));
+                                                                optionPrice.setB4(toDouble(d[30]));
+                                                                optionPrice.setBv4(toInt(d[31]));
+                                                                optionPrice.setB5(toDouble(d[32]));
+                                                                optionPrice.setBv5(toInt(d[33]));
+                                                                optionPrice.setS2(toDouble(d[34]));
+                                                                optionPrice.setSv2(toInt(d[35]));
+                                                                optionPrice.setS3(toDouble(d[36]));
+                                                                optionPrice.setSv3(toInt(d[37]));
+                                                                optionPrice.setS4(toDouble(d[38]));
+                                                                optionPrice.setSv4(toInt(d[39]));
+                                                                optionPrice.setS5(toDouble(d[40]));
+                                                                optionPrice.setSv5(toInt(d[41]));
+                                                                optionPrice.setCommodityNo(d[42]);
+                                                                optionPrice.setTflag(d[43]);
+                                                                optionPrice.setLocalTm(toInt(d[44]));
+                                                                optionPrice.setSeqNo(toInt(d[45]));
 
                                                                 //optionPriceService.insertOptionPrice(tableName, optionPrice);
                                                                 priceList.add(optionPrice);
@@ -226,7 +211,7 @@ public class FutureOptionImportService {
                                                                     start2 = end2;
                                                                 }
                                                             } catch (Exception e) {
-
+                                                                log.error("", e);
                                                             }
 
                                                             //                                            System.out.println(Arrays.asList(d));
@@ -243,7 +228,7 @@ public class FutureOptionImportService {
                                         }
                                     }
                                     zipFile.close();
-                                } catch (IOException e) {
+                                } catch (Exception e) {
                                     log.error("", e);
                                 }
 
@@ -350,7 +335,7 @@ public class FutureOptionImportService {
                                                                     start2 = end2;
                                                                 }
                                                             } catch (Exception e) {
-
+                                                                log.error("", e);
                                                             }
 
                                                             //                                            System.out.println(Arrays.asList(d));

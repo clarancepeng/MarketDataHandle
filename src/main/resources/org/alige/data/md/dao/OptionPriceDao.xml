@@ -57,7 +57,57 @@
         preclosepx  numeric(12, 4),
         numtrade integer
         <!--,        CONSTRAINT ${tablePK} PRIMARY KEY(uptime, optid, seqno)-->
-        )
+        );
+
+        comment on table ${tableName} is '个股期权TickData表';
+        comment on column ${tableName}.id is '数据ID';
+        comment on column ${tableName}.tdate is '交易日期';
+        comment on column ${tableName}.uptime is '发生时间';
+        comment on column ${tableName}.origintime is '更新时间';
+        comment on column ${tableName}.origintimems is '更新时间（毫秒）';
+        comment on column ${tableName}.optid is '合约代码';
+        comment on column ${tableName}.presettle is '昨结算价';
+        comment on column ${tableName}.settlepx is '今结算价';
+        comment on column ${tableName}.openpx is '开盘价';
+        comment on column ${tableName}.highpx is '最高价';
+        comment on column ${tableName}.lowpx is '最低价';
+        comment on column ${tableName}.lastpx is '最新价';
+        comment on column ${tableName}.closepx is '收盘价';
+        comment on column ${tableName}.auctionpx is '集合竞价';
+        comment on column ${tableName}.auctionqty is '集合竞价量';
+        comment on column ${tableName}.openints is '持仓量';
+        comment on column ${tableName}.volume is '累计成交量';
+        comment on column ${tableName}.value is '累计成交额';
+        comment on column ${tableName}.b1 is '买一';
+        comment on column ${tableName}.bv1 is '买一量';
+        comment on column ${tableName}.b2 is '买二';
+        comment on column ${tableName}.bv2 is '买二量';
+        comment on column ${tableName}.b3 is '买三';
+        comment on column ${tableName}.bv3 is '买三量';
+        comment on column ${tableName}.b4 is '买四';
+        comment on column ${tableName}.bv4 is '买四量';
+        comment on column ${tableName}.b5 is '买五';
+        comment on column ${tableName}.bv5 is '买五量';
+        comment on column ${tableName}.s1 is '卖一';
+        comment on column ${tableName}.sv1 is '卖一量';
+        comment on column ${tableName}.s2 is '卖二';
+        comment on column ${tableName}.sv2 is '卖二量';
+        comment on column ${tableName}.s3 is '卖三';
+        comment on column ${tableName}.sv3 is '卖三量';
+        comment on column ${tableName}.s4 is '卖四';
+        comment on column ${tableName}.sv4 is '卖四量';
+        comment on column ${tableName}.s5 is '卖五';
+        comment on column ${tableName}.sv5 is '卖五量';
+        comment on column ${tableName}.local_time is '本地时间戳';
+        comment on column ${tableName}.market is '交易所';
+        comment on column ${tableName}.unix is '交易所时间';
+        comment on column ${tableName}.source is '数据源';
+        comment on column ${tableName}.datastatus is '数据状态';
+        comment on column ${tableName}.tradingphase is '市场状态';
+        comment on column ${tableName}.imagestatus is '快照类型';
+        comment on column ${tableName}.seqno is '消息序列号';
+        comment on column ${tableName}.preclosepx  is '昨收盘价';
+        comment on column ${tableName}.numtrade is '成交笔数';
     </update>
 
     <insert id="insertOptionPrice">
@@ -103,7 +153,23 @@
         value numeric(18, 4),
         vwap numeric(12, 4),
         openints numeric(20)
-        )
+        );
+
+        comment on table ${tableName} is '个股期权分钟数据表';
+        comment on column ${tableName}.id is '数据ID';
+        comment on column ${tableName}.datadate is '交易日期';
+        comment on column ${tableName}.optid is '合约代码';
+        comment on column ${tableName}.exchangecd is '市场';
+        comment on column ${tableName}.utcoffect is '毫秒偏移量';
+        comment on column ${tableName}.bartime is '聚合时间';
+        comment on column ${tableName}.closeprice is '最终价';
+        comment on column ${tableName}.openprice is '初始价';
+        comment on column ${tableName}.highprice is '最高价';
+        comment on column ${tableName}.lowprice is '最低价';
+        comment on column ${tableName}.volume is '成交数量';
+        comment on column ${tableName}.value is '成交金额';
+        comment on column ${tableName}.vwap is '加权均价';
+        comment on column ${tableName}.openints is '持仓量';
     </update>
 
     <insert id="insertOptionPriceMinBatch" parameterType="org.alige.data.md.model.OptionPriceMin">
